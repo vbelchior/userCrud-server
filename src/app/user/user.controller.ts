@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 import { firstValueFrom } from 'rxjs';
@@ -53,8 +54,8 @@ export class UserController {
   }
 
   @Get()
-  public filter(): Promise<UserEntity[]> {
-    return firstValueFrom(this.userService.filter());
+  public filter(@Query('nameLike') nameLike?: string): Promise<UserEntity[]> {
+    return firstValueFrom(this.userService.filter(nameLike));
   }
 
   @Get('/count/value')

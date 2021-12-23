@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { TypeUtil } from '@commons/utils';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository, ILike } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class UserService {
   public filter(nameLike?: string): Observable<UserEntity[]> {
     const query: object = {};
     if (TypeUtil.exists(nameLike))
-      query[UserEntity.NAME] = { $regex: nameLike, $options: 'i' };
+      query[UserEntity.NAME] = ILike(`%${nameLike}%`);
     return from(this.userRepository.find({ where: query }));
   }
 }
