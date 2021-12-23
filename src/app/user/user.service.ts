@@ -16,8 +16,13 @@ export class UserService {
     return from(this.userRepository.save(new UserEntity(entity)));
   }
 
-  public retrieve(id: number): Observable<UserEntity> {
-    return from(this.userRepository.findOne(id));
+  public retrieve(id: number): Observable<any> {
+    return from(
+      this.userRepository.findOne({
+        where: { id: id },
+        relations: ['address'],
+      }),
+    );
   }
 
   public update(id: number, entity: UserEntity): Observable<any> {

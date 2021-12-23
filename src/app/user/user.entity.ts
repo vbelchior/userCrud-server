@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { AddressEntity } from '@app/address/address.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('users')
 export class UserEntity {
@@ -32,6 +33,12 @@ export class UserEntity {
   @Column('json')
   public extra?: object;
 
+  @OneToOne(() => AddressEntity, (address) => address.id, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'addressId', referencedColumnName: 'id' })
+  public address: AddressEntity;
+
   constructor(json?: any) {
     if (json != undefined && json != null) {
       const keys: Array<string> = Object.keys(json);
@@ -46,6 +53,10 @@ export class UserEntity {
         this.phone = json.phone ? Number(json.phone) : json.phone;
       if (keys.includes('extra'))
         this.extra = json.extra ? Object(json.extra) : json.extra;
+      if (keys.includes('address'))
+        this.address = json.address
+          ? new AddressEntity(json.address)
+          : json.address;
     }
   }
 }

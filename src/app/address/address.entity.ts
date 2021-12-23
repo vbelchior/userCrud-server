@@ -1,7 +1,9 @@
 import { TypeUtil } from '@commons/utils';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('addresses')
+@Entity('addresses', {
+  synchronize: false, //
+})
 export class AddressEntity {
   public static readonly ID: keyof AddressEntity = 'id';
 

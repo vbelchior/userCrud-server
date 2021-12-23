@@ -32,8 +32,11 @@ export class UserController {
   }
 
   @Get('/:id')
-  public retrieve(@Param('id') id: number): Promise<UserEntity> {
-    return firstValueFrom(this.userService.retrieve(id));
+  public async retrieve(@Param('id') id: number): Promise<UserEntity> {
+    const _user: UserEntity = await firstValueFrom(
+      this.userService.retrieve(id),
+    );
+    return _user;
   }
 
   @Patch('/:id')
